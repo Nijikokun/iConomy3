@@ -141,10 +141,10 @@ public class iConomy extends JavaPlugin {
 	public void onDisable() {
         for(String account : Bank.getAccounts().keySet()) {
             Bank.getAccount(account).save();
-        }
+         }
 
-		System.out.println("[iConomy] saved accounts.");
-        System.out.println("[iConomy] Has been disabled.");
+            System.out.println("[iConomy] saved accounts.");
+            System.out.println("[iConomy] Has been disabled.");
 	}
         @Override
         public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
