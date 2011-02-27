@@ -5,7 +5,7 @@ import java.io.File;
 import org.bukkit.util.config.Configuration;
 
 public class Template {
-	private Configuration tpl = null;
+	private static Configuration tpl = null;
 	
     public Template(String directory, String filename) {
         this.tpl = new Configuration(new File(directory, filename));
@@ -20,8 +20,8 @@ public class Template {
      * @return <code>String</code> - Template line / string.
      */
     
-    public String raw(String key) {
-        return this.tpl.getString(key);
+    public static String raw(String key) {
+        return tpl.getString(key);
     }
 
     /**
@@ -41,12 +41,12 @@ public class Template {
     	this.tpl.setProperty(key, line);
     }
     
-    public String color(String key) {
-        return Messaging.parse(Messaging.colorize(this.raw(key)));
+    public static String color(String key) {
+        return Messaging.parse(Messaging.colorize(raw(key)));
     }
 
-    public String parse(String key, Object[] argument, Object[] points) {
-        return Messaging.parse(Messaging.colorize(Messaging.argument(this.raw(key), argument, points)));
+    public static String parse(String key, Object[] argument, Object[] points) {
+        return Messaging.parse(Messaging.colorize(Messaging.argument(raw(key), argument, points)));
     }
 
     public String parse(String key, String line, Object[] argument, Object[] points) {

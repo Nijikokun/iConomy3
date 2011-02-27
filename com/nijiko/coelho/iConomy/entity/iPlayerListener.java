@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerListener;
 
 public class iPlayerListener extends PlayerListener {
-	private Template Template = null;
+	private static Template Template = null;
 
 	public iPlayerListener(String directory) {
 		Template = new Template(directory, "Messages.tpl");
@@ -25,7 +25,7 @@ public class iPlayerListener extends PlayerListener {
 	/**
 	 * Sends simple condensed help lines to the current player
 	 */
-	private void showSimpleHelp() {
+	public static void showSimpleHelp() {
 		Messaging.send("&e----------------------------------------------------");
 		Messaging.send("&f iConomy (&c" + Constants.Codename + "&f)           ");
 		Messaging.send("&e----------------------------------------------------");
@@ -54,7 +54,7 @@ public class iPlayerListener extends PlayerListener {
 	 * @param mine Is it the player who is trying to view?
 	 */
 
-	public void showBalance(String name, Player viewing, boolean mine) {
+	public static void showBalance(String name, Player viewing, boolean mine) {
 		if (mine) {
 			Messaging.send(viewing, Template.color("tag") + Template.parse("personal.balance", new String[]{"+balance,+b"}, new String[]{iConomy.getBank().format(viewing.getName())}));
 		} else {
@@ -70,7 +70,7 @@ public class iPlayerListener extends PlayerListener {
 	 * @param notify Do we want to show the updates to each player?
 	 */
 
-	public void showPayment(String from, String to, double amount) {
+	public static void showPayment(String from, String to, double amount) {
 		Player paymentFrom = iConomy.getBukkitServer().getPlayer(from);
 		Player paymentTo = iConomy.getBukkitServer().getPlayer(to);
 		Account balanceFrom = iConomy.getBank().getAccount(from);
@@ -138,7 +138,7 @@ public class iPlayerListener extends PlayerListener {
 	 * @param console Is it sent via console?
 	 */
 
-	public void showReset(String account, Player controller, boolean console) {
+	public static void showReset(String account, Player controller, boolean console) {
 		Player player = iConomy.getBukkitServer().getPlayer(account);
 
         // Log Transaction
@@ -176,7 +176,7 @@ public class iPlayerListener extends PlayerListener {
 	 * @param console Is it sent via console?
 	 */
 
-	public void showGrant(String name, Player controller, double amount, boolean console) {
+	public static void showGrant(String name, Player controller, double amount, boolean console) {
 		Player online = iConomy.getBukkitServer().getPlayer(name);
 		Account account = iConomy.getBank().getAccount(name);
 		account.add(amount);
@@ -228,7 +228,7 @@ public class iPlayerListener extends PlayerListener {
 	 * @param console Is it sent via console?
 	 */
 
-	public void showSet(String name, Player controller, double amount, boolean console) {
+	public static void showSet(String name, Player controller, double amount, boolean console) {
 		Player online = iConomy.getBukkitServer().getPlayer(name);
 		Account account = iConomy.getBank().getAccount(name);
 		account.setBalance(amount);
@@ -274,7 +274,7 @@ public class iPlayerListener extends PlayerListener {
      * @param viewing
      * @param player
      */
-	public void showRank(Player viewing, String player) {
+	public static void showRank(Player viewing, String player) {
 		if (iConomy.getBank().hasAccount(player)) {
 			int rank = iConomy.getBank().getAccountRank(player);
 
@@ -305,7 +305,7 @@ public class iPlayerListener extends PlayerListener {
      * @param viewing
      * @param amount
      */
-	public void showTop(Player viewing, int amount) {
+	public static void showTop(Player viewing, int amount) {
 		ArrayList<String> als = iConomy.getBank().getAccountRanks(amount);
 
 		Messaging.send(
@@ -358,7 +358,6 @@ public class iPlayerListener extends PlayerListener {
      *
      * @param event
      */
-	@Override
 	public void onPlayerCommand(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		Messaging.save(player);
@@ -574,5 +573,6 @@ public class iPlayerListener extends PlayerListener {
 
 		return;
 	}
+
 
 }
