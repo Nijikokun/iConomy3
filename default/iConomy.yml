@@ -3,10 +3,11 @@
 ##
 System:
     Currency: Coin                  # The name of your currency
+    Initial_Balance: 45.0           # The amount each player starts off with
     Logging:
         Enabled: false              # Should we log transactions? Does not work for flatfile.
     Database:
-        Type: SQLite                # Can be MySQL, SQLite, or Flatfile
+        Type: Flatfile                # Can be MySQL, SQLite, or Flatfile
         Name: minecraft             # Name of the database
         Table: iConomy              # Table, Flatfile uses this as the file name.
         MySQL:
