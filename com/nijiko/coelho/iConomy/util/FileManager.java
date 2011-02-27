@@ -92,8 +92,8 @@ public final class FileManager {
     }
 
     public void existsCreate(String directory, String file) {
-        if(!((new File(directory).exists()))) {
-            if(!((new File(directory, file)).exists())) {
+        if (!((new File(directory).exists()))) {
+            if (!((new File(directory, file)).exists())) {
                 this.create(directory, file);
             } else {
                 this.createDirectory(directory);
@@ -203,7 +203,7 @@ public final class FileManager {
             try {
                 this.source = input.readLine();
 
-                while ((line = input.readLine()) != null){
+                while ((line = input.readLine()) != null) {
                     this.lines.add(line);
                 }
             } catch (IOException ex) {
@@ -221,7 +221,7 @@ public final class FileManager {
     }
 
     public boolean write(Object data) {
-        return this.write(this.directory, this.file, new Object[]{ data });
+        return this.write(this.directory, this.file, new Object[]{data});
     }
 
     public boolean write(Object[] lines) {

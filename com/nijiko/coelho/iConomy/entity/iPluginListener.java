@@ -8,20 +8,18 @@ import com.nijiko.coelho.iConomy.iConomy;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class iPluginListener extends ServerListener {
-	
+
     public iPluginListener() {
-    	
     }
 
-	@Override
+    @Override
     public void onPluginEnabled(PluginEvent event) {
-    	
-        if(event.getPlugin().getDescription().getName().equals("Permissions")) {
-            iConomy.setPermissions((Permissions)event.getPlugin());
-            
+
+        if (event.getPlugin().getDescription().getName().equals("Permissions")) {
+            iConomy.Permissions = ((Permissions) event.getPlugin()).Security;
+
             System.out.println("[iConomy] Successfully linked with Permissions.");
         }
-        
+
     }
-    
 }

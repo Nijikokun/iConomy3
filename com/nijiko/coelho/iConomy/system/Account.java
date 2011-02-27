@@ -7,6 +7,7 @@ import com.nijiko.coelho.iConomy.iConomy;
 import com.nijiko.coelho.iConomy.util.Constants;
 
 public class Account {
+
     private String name;
     private double balance;
 
@@ -46,11 +47,11 @@ public class Account {
 
     public void add(double amount) {
         this.balance = this.balance + amount;
-    } 
+    }
 
     public void multiply(double amount) {
         this.balance = this.balance * amount;
-    } 
+    }
 
     public void divide(double amount) {
         this.balance = this.balance / amount;
@@ -61,38 +62,34 @@ public class Account {
     }
 
     public void remove() {
-		if (Constants.Database_Type.equalsIgnoreCase("flatfile")) {
+        if (Constants.Database_Type.equalsIgnoreCase("flatfile")) {
             iConomy.getDatabase().getFlatfile().removeProperty("accounts." + this.name);
-		} else {
+        } else {
             iConomy.getDatabase().executeQuery(
-                "DELETE FROM `" + Constants.SQL_Table + "` WHERE username = ?",
-                new Object[]{ this.name }
-            );
+                    "DELETE FROM `" + Constants.SQL_Table + "` WHERE username = ?",
+                    new Object[]{this.name});
         }
     }
 
     public void save() {
-		if (Constants.Database_Type.equalsIgnoreCase("flatfile")) {
+        if (Constants.Database_Type.equalsIgnoreCase("flatfile")) {
             iConomy.getDatabase().getFlatfile().setProperty("accounts." + this.name, this.balance);
-		} else {
+        } else {
             try {
                 ResultSet rs = iConomy.getDatabase().resultQuery(
-                    "SELECT * FROM `" + Constants.SQL_Table + "` WHERE username = ?",
-                    new Object[]{ this.name }
-                );
+                        "SELECT * FROM `" + Constants.SQL_Table + "` WHERE username = ?",
+                        new Object[]{this.name});
 
-                if(!rs.next()) {
+                if (!rs.next()) {
                     iConomy.getDatabase().executeQuery(
-                        "INSERT INTO `" + Constants.SQL_Table + "`(username, balance) VALUES (?, ?)",
-                        new Object[] { this.name, this.balance }
-                    );
+                            "INSERT INTO `" + Constants.SQL_Table + "`(username, balance) VALUES (?, ?)",
+                            new Object[]{this.name, this.balance});
                 } else {
                     iConomy.getDatabase().executeQuery(
-                        "UPDATE `" + Constants.SQL_Table + "` SET balance = ? WHERE username = ?",
-                        new Object[] { this.balance, this.name }
-                    );
+                            "UPDATE `" + Constants.SQL_Table + "` SET balance = ? WHERE username = ?",
+                            new Object[]{this.balance, this.name});
                 }
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -103,10 +100,10 @@ public class Account {
         DecimalFormat formatter = new DecimalFormat("#,##0.##");
         String formatted = formatter.format(this.balance);
 
-        if(formatted.endsWith("."))
-            formatted = formatted.substring(0, formatted.length()-1);
+        if (formatted.endsWith(".")) {
+            formatted = formatted.substring(0, formatted.length() - 1);
+        }
 
         return formatted;
     }
 }
-
