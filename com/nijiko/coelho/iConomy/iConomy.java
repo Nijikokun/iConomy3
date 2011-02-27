@@ -46,6 +46,7 @@ public class iConomy extends JavaPlugin {
 	private static iPlayerListener playerListener = null;
 	private static iPluginListener pluginListener = null;
 	private static Transactions Transactions = null;
+        private Template Template = null;
 	
 
 	@Override
@@ -153,7 +154,7 @@ public class iConomy extends JavaPlugin {
 			switch(args.length) {
 			case 0:
 
-				iPlayerListener.showBalance("", player, true);
+				playerListener.showBalance("", player, true);
 				return true;
 
 			case 1:
@@ -162,7 +163,7 @@ public class iConomy extends JavaPlugin {
 					if (!iConomy.getPermissions().permission(player, "iConomy.rank"))
 						return false;
 
-					iPlayerListener.showRank(player, player.getName());
+					playerListener.showRank(player, player.getName());
 
 					return true;
 				}
@@ -171,7 +172,7 @@ public class iConomy extends JavaPlugin {
 					if (!iConomy.getPermissions().has(player, "iConomy.list"))
 						return false;
 
-					iPlayerListener.showTop(player, 5);
+					playerListener.showTop(player, 5);
 
 					return true;
 				}
@@ -210,7 +211,7 @@ public class iConomy extends JavaPlugin {
                 if (Misc.isAny(args[0],
                         new String[] { "help", "?", "grant", "-g", "reset", "-x", "set", "-s", "pay", "-p" })) {
 
-					iPlayerListener.showSimpleHelp();
+					playerListener.showSimpleHelp();
 
 					return false;
 				} else {
@@ -218,7 +219,7 @@ public class iConomy extends JavaPlugin {
 						return false;
 
 					if (iConomy.getBank().hasAccount(args[0])) {
-						iPlayerListener.showBalance(args[0], player, false);
+						playerListener.showBalance(args[0], player, false);
 					} else {
 						player.sendMessage(Template.parse("no.account", new String[]{"+name,+n"}, new String[]{args[0]}));
 					}
@@ -233,7 +234,7 @@ public class iConomy extends JavaPlugin {
 						return false;
 
 					if (iConomy.getBank().hasAccount(args[1])) {
-						iPlayerListener.showRank(player, args[1]);
+						playerListener.showRank(player, args[1]);
 					} else {
 						player.sendMessage(Template.parse("no.account", new String[]{"+name,+n"}, new String[]{args[1]}));
 					}
@@ -246,9 +247,9 @@ public class iConomy extends JavaPlugin {
 						return false;
 
 					try {
-						iPlayerListener.showTop(player, Integer.parseInt(args[1]) < 0 ? 5 : Integer.parseInt(args[1]));
+						playerListener.showTop(player, Integer.parseInt(args[1]) < 0 ? 5 : Integer.parseInt(args[1]));
 					} catch(Exception e) {
-						iPlayerListener.showTop(player, 5);
+						playerListener.showTop(player, 5);
 					}
 
 					return true;
@@ -259,7 +260,7 @@ public class iConomy extends JavaPlugin {
 						return false;
 
 					if (iConomy.getBank().hasAccount(args[1])) {
-						iPlayerListener.showReset(args[1], player, false);
+						playerListener.showReset(args[1], player, false);
 					} else {
 						player.sendMessage(Template.parse("no.account", new String[]{"+name,+n"}, new String[]{args[1]}));
 					}
@@ -296,7 +297,7 @@ public class iConomy extends JavaPlugin {
 						return false;
 					}
 
-					iPlayerListener.showPayment(player.getName(), name, amount);
+					playerListener.showPayment(player.getName(), name, amount);
 
 					return true;
 				}
@@ -322,7 +323,7 @@ public class iConomy extends JavaPlugin {
                                                 return false;
 					}
 
-					iPlayerListener.showGrant(name, player, amount, true);
+					playerListener.showGrant(name, player, amount, true);
 
 					return true;
 				}
@@ -348,7 +349,7 @@ public class iConomy extends JavaPlugin {
                                                 return false;
 					}
 
-					iPlayerListener.showSet(name, player, amount, true);
+					playerListener.showSet(name, player, amount, true);
 
 					return true;
 				}
@@ -356,7 +357,7 @@ public class iConomy extends JavaPlugin {
 				break;
 			}
 
-			iPlayerListener.showSimpleHelp();
+			playerListener.showSimpleHelp();
 		}
 
 		return false;
