@@ -1,4 +1,8 @@
 name: iConomy
 main: com.nijiko.coelho.iConomy.iConomy
-version: 4.0
-authors: [ Nijikokun, Coelho ]
+version: 5.0
+authors: [ Nijikokun,Coelho,Wolfwood]
+commands:
+  money:
+    description:  Manage your iConomy Money
+    usage: /<command> [-h for more info]
