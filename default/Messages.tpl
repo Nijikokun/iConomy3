@@ -58,7 +58,8 @@ top:
 
 ##
 # Errors
+# no: was causing it to see false not no
 ##
-no:
+Error:
     account: "<rose>Player does not have account: <white>+name"
     funds: "<rose>Sorry, you do not have enough funds to do that."

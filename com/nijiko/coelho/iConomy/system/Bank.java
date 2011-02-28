@@ -31,7 +31,7 @@ public class Bank {
         this.currency = Constants.Currency;
         this.initial = Constants.Initial_Balance;
 
-        HashMap<String, Account> accounts = new HashMap<String, Account>();
+        HashMap<String, Account> Paccounts = new HashMap<String, Account>();
 
         if (Constants.Database_Type.equalsIgnoreCase("flatfile")) {
             Configuration Flatfile = iConomy.getDatabase().getFlatfile();
@@ -40,7 +40,7 @@ public class Bank {
             if (balances != null) {
                 for (String account : Flatfile.getStringList("accounts", null)) {
                     Account initialized = new Account(account, Flatfile.getDouble(account, Constants.Initial_Balance));
-                    accounts.put(account.toLowerCase(), initialized);
+                    Paccounts.put(account.toLowerCase(), initialized);
                 }
             }
         } else {
@@ -58,12 +58,12 @@ public class Bank {
 
                 while (rs.next()) {
                     Account initialized = new Account(rs.getString("username"), rs.getDouble("balance"));
-                    accounts.put(rs.getString("username").toLowerCase(), initialized);
+                    Paccounts.put(rs.getString("username").toLowerCase(), initialized);
                 }
             }
         }
 
-        this.accounts = accounts;
+        this.accounts = Paccounts;
     }
 
     /**

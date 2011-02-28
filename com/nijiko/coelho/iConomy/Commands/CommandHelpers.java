@@ -18,9 +18,9 @@ public class CommandHelpers {
     private Template Template = null;
     private iConomy plugin;
 
-    public CommandHelpers(iConomy plugin, String directory) {
+    public CommandHelpers(iConomy plugin, Template Template) {
         this.plugin = plugin;
-        Template = new Template(directory, "Messages.tpl");
+        this.Template = Template;
     }
 
     /**
@@ -76,7 +76,7 @@ public class CommandHelpers {
      * @param by The player resetting the account. Cannot be null.
      * @param notify Do we want to show the updates to each player?
      */
-    public void showPayment(String from, String to, double amount) {
+    public void showPayment(String from, String to, double amount) throws Exception {
         Player paymentFrom = iConomy.getBukkitServer().getPlayer(from);
         Player paymentTo = iConomy.getBukkitServer().getPlayer(to);
         Account balanceFrom = iConomy.getBank().getAccount(from);
@@ -84,7 +84,7 @@ public class CommandHelpers {
 
         if (from.equals(to)) {
             if (paymentFrom != null) {
-                Messaging.send(paymentFrom, Template.color("pay.self"));
+                Messaging.send(paymentFrom, Template.color("payment.self"));
             }
         } else if (amount < 0.0) {
             if (paymentFrom != null) {

@@ -7,6 +7,8 @@ import com.nijiko.coelho.iConomy.util.Messaging;
 import com.nijiko.coelho.iConomy.util.Misc;
 import com.nijiko.coelho.iConomy.util.Template;
 import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -22,7 +24,9 @@ public class moneyCommand extends CommandHandler {
 
     public moneyCommand(iConomy plugin) {
         super(plugin);
-        ch = new CommandHelpers(plugin, plugin.getDataFolder().getPath());
+        Template = new Template(plugin.getDataFolder().getPath(), "Messages.tpl");
+        ch = new CommandHelpers(plugin, Template);
+
     }
 
     @Override
@@ -70,19 +74,23 @@ public class moneyCommand extends CommandHandler {
                         totalMoney += ((Account) o).getBalance();
                     }
 
-                    Messaging.send(Template.color("statistics.opening"));
+                    try {
+                        Messaging.send(Template.color("statistics.opening"));
 
-                    Messaging.send(Template.parse("statistics.total",
-                            new String[]{"+currency,+c", "+amount,+money,+a,+m"},
-                            new Object[]{iConomy.getBank().getCurrency(), iConomy.getBank().format(totalMoney)}));
+                        Messaging.send(Template.parse("statistics.total",
+                                new String[]{"+currency,+c", "+amount,+money,+a,+m"},
+                                new Object[]{iConomy.getBank().getCurrency(), iConomy.getBank().format(totalMoney)}));
 
-                    Messaging.send(Template.parse("statistics.average",
-                            new String[]{"+currency,+c", "+amount,+money,+a,+m"},
-                            new Object[]{iConomy.getBank().getCurrency(), iConomy.getBank().format(totalMoney / totalPlayers)}));
+                        Messaging.send(Template.parse("statistics.average",
+                                new String[]{"+currency,+c", "+amount,+money,+a,+m"},
+                                new Object[]{iConomy.getBank().getCurrency(), iConomy.getBank().format(totalMoney / totalPlayers)}));
 
-                    Messaging.send(Template.parse("statistics.accounts",
-                            new String[]{"+currency,+c", "+amount,+accounts,+a"},
-                            new Object[]{iConomy.getBank().getCurrency(), totalPlayers}));
+                        Messaging.send(Template.parse("statistics.accounts",
+                                new String[]{"+currency,+c", "+amount,+accounts,+a"},
+                                new Object[]{iConomy.getBank().getCurrency(), totalPlayers}));
+                    } catch (Exception e) {
+                        iConomy.log.severe("[iConomy] Something went wrong when trying to display stats. " + e.getMessage());
+                    }
 
                     return true;
                 }
@@ -101,7 +109,7 @@ public class moneyCommand extends CommandHandler {
                     if (iConomy.getBank().hasAccount(split[0])) {
                         ch.showBalance(split[0], player, false);
                     } else {
-                        Messaging.send(Template.parse("no.account", new String[]{"+name,+n"}, new String[]{split[0]}));
+                        Messaging.send(Template.parse("Error.account", new String[]{"+name,+n"}, new String[]{split[0]}));
                     }
 
                     return true;
@@ -117,7 +125,7 @@ public class moneyCommand extends CommandHandler {
                     if (iConomy.getBank().hasAccount(split[1])) {
                         ch.showRank(player, split[1]);
                     } else {
-                        Messaging.send(Template.parse("no.account", new String[]{"+name,+n"}, new String[]{split[1]}));
+                        Messaging.send(Template.parse("Error.account", new String[]{"+name,+n"}, new String[]{split[1]}));
                     }
 
                     return true;
@@ -145,7 +153,7 @@ public class moneyCommand extends CommandHandler {
                     if (iConomy.getBank().hasAccount(split[1])) {
                         ch.showReset(split[1], player, false);
                     } else {
-                        Messaging.send(Template.parse("no.account", new String[]{"+name,+n"}, new String[]{split[1]}));
+                        Messaging.send(Template.parse("Error.account", new String[]{"+name,+n"}, new String[]{split[1]}));
                     }
 
                     return true;
@@ -166,8 +174,15 @@ public class moneyCommand extends CommandHandler {
                     if (iConomy.getBank().hasAccount(split[1])) {
                         name = split[1];
                     } else {
-                        Messaging.send(Template.parse("no.account", new String[]{"+name,+n"}, new String[]{split[1]}));
-                        return true;
+                        try {
+                            String[] Who = new String[]{split[1]};
+                            Messaging.send(Template.parse("Error.account", new String[]{"+name,+n"}, Who));
+                            return true;
+                        } catch (NullPointerException e) {
+                            Messaging.send("What did you do.");
+                            e.printStackTrace();
+                            return true;
+                        }
                     }
 
                     try {
@@ -181,8 +196,11 @@ public class moneyCommand extends CommandHandler {
                         Messaging.send("&cUsage: &f/money &c[&f-p&c|&fpay&c] <&fplayer&c> &c<&famount&c>");
                         return true;
                     }
-
-                    ch.showPayment(player.getName(), name, amount);
+                    try {
+                        ch.showPayment(player.getName(), name, amount);
+                    } catch (Exception ex) {
+                        Logger.getLogger(moneyCommand.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                     return true;
                 }
@@ -198,7 +216,8 @@ public class moneyCommand extends CommandHandler {
                     if (iConomy.getBank().hasAccount(split[1])) {
                         name = split[1];
                     } else {
-                        Messaging.send(Template.parse("no.account", new String[]{"+name,+n"}, new String[]{split[1]}));
+                        Messaging.send(Template.parse("Error.account", new String[]{"+name,+n"}, new String[]{split[1]}));
+                        return true;
                     }
 
                     try {
@@ -206,6 +225,7 @@ public class moneyCommand extends CommandHandler {
                     } catch (NumberFormatException e) {
                         Messaging.send("&cInvalid amount: &f" + split[2]);
                         Messaging.send("&cUsage: &f/money &c[&f-g&c|&fgrant&c] <&fplayer&c> (&f-&c)&c<&famount&c>");
+                        return true;
                     }
 
                     ch.showGrant(name, player, amount, true);
@@ -224,7 +244,8 @@ public class moneyCommand extends CommandHandler {
                     if (iConomy.getBank().hasAccount(split[1])) {
                         name = split[1];
                     } else {
-                        Messaging.send(Template.parse("no.account", new String[]{"+name,+n"}, new String[]{split[1]}));
+                        Messaging.send(Template.parse("Error.account", new String[]{"+name,+n"}, new String[]{split[1]}));
+                        return true;
                     }
 
                     try {
@@ -232,6 +253,7 @@ public class moneyCommand extends CommandHandler {
                     } catch (NumberFormatException e) {
                         Messaging.send("&cInvalid amount: &f" + split[2]);
                         Messaging.send("&cUsage: &f/money &c[&f-g&c|&fgrant&c] <&fplayer&c> (&f-&c)&c<&famount&c>");
+                        return true;
                     }
 
                     ch.showSet(name, player, amount, true);
