@@ -160,7 +160,7 @@ public class Database {
             if (this.database.equals(database.SQLITE)) {
                 st.executeUpdate("CREATE TABLE `iBalances` ( `id` INT ( 255 ) PRIMARY KEY , `player` TEXT , `balance` DECIMAL( 255,5 ) NOT NULL); CREATE INDEX playerIndex on iBalances (player);CREATE INDEX balanceIndex on iBalances (balance);");
             } else {
-                st.executeUpdate("CREATE TABLE `iBalances` ( `id` INT( 255 ) NOT NULL AUTO_INCREMENT, `player` TEXT NOT NULL ,`balance` DECIMAL( 254,5 ) NOT NULL, PRIMARY KEY ( `id` ), INDEX ( `balance` )) ENGINE = MYISAM;");
+                st.executeUpdate("CREATE TABLE `iBalances` ( `id` INT( 255 ) NOT NULL AUTO_INCREMENT, `player` TEXT NOT NULL ,`balance` DECIMAL( 64,5 ) NOT NULL, PRIMARY KEY ( `id` ), INDEX ( `balance` )) ENGINE = MYISAM;");
             }
         } catch (SQLException ex) {
             iConomy.log.severe("[iConomy]: Could not create table for " + (this.database.equals(database.SQLITE) ? "sqlite" : "mysql") + ": " + ex);
