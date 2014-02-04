@@ -25,7 +25,7 @@ public class iPlayerListener extends PlayerListener {
 	/**
 	 * Sends simple condensed help lines to the current player
 	 */
-	private void showSimpleHelp() {
+	public void showSimpleHelp() {
 		Messaging.send("&e----------------------------------------------------");
 		Messaging.send("&f iConomy (&c" + Constants.Codename + "&f)           ");
 		Messaging.send("&e----------------------------------------------------");
@@ -358,7 +358,6 @@ public class iPlayerListener extends PlayerListener {
      *
      * @param event
      */
-	@Override
 	public void onPlayerCommand(PlayerChatEvent event) {
 		Player player = event.getPlayer();
 		Messaging.save(player);
@@ -574,5 +573,6 @@ public class iPlayerListener extends PlayerListener {
 
 		return;
 	}
+
 
 }

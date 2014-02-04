@@ -21,7 +21,7 @@ public class Template {
      */
     
     public String raw(String key) {
-        return this.tpl.getString(key);
+        return tpl.getString(key);
     }
 
     /**

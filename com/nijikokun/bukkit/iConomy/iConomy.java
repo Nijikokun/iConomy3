@@ -111,10 +111,7 @@ public class iConomy extends JavaPlugin {
     public static Database database = null;
     public static Bank Bank = null;
 
-    public iConomy(PluginLoader pluginLoader, Server instance, PluginDescriptionFile desc, File folder, File plugin, ClassLoader cLoader) {
-        super(pluginLoader, instance, desc, folder, plugin, cLoader);
-    }
-
+   
     public void onDisable() {
         log.info(Messaging.bracketize(name) + " version " + Messaging.bracketize(version) + " (" + codename + ") un-loaded");
     }
@@ -151,7 +148,7 @@ public class iConomy extends JavaPlugin {
 
     private void registerEvents() {
         this.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_ENABLE, Listener, Priority.Monitor, this);
-        this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND, l, Priority.Normal, this);
+        //this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_COMMAND, l, Priority.Normal, this);
         this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_JOIN, l, Priority.Normal, this);
     }
 
